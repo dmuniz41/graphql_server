@@ -52,8 +52,18 @@ const resolvers = {
         ...args.game,
         id: Math.floor(Math.random() * 10000).toString(),
       };
-      db.games.push(game)
-      return game
+      db.games.push(game);
+      return game;
+    },
+    updateGame(_, args) {
+      db.games = db.games.map((game) => {
+        if (game.id === args.id) {
+          // * los campos del segundo operador spread sobreescriben a los del primero si estos coinciden en el nombre de la propiedad
+          return { ...game, ...args.edits };
+        }
+        return game;
+      });
+      return db.games.find((game) => game.id === args.id);
     },
   },
 };
